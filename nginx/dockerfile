@@ -1,0 +1,6 @@
+FROM nginx:latest
+
+COPY ./nginx/certs /etc/nginx/certs/
+COPY ./nginx/default.conf /etc/nginx/conf.d/
+
+CMD ["nginx", "-g", "daemon off;"]
