@@ -31,7 +31,6 @@ services:
     networks:
       - back
     
-
   wordpress:
     depends_on:
       - database
@@ -66,10 +65,33 @@ services:
     volumes:
       - redis_data:/data
   
+  grafana:
+    image: grafana/grafana
+    container_name: ${CONTAINER_NAME}-grafana
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+  prometheus:
+    image: prom/prometheus
+    container_name: ${CONTAINER_NAME}-prometheus
+    ports:
+      - 9090:9090
+    command: '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    volumes:
+    - prom_data:/prometheus
+
+
 volumes:
   sqldata:
   wordpressdata:
   redis_data:
+  grafana-storage:
+  prom_data:
+
 
 networks:
   front:
